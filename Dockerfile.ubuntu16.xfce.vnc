@@ -2,21 +2,21 @@
 
 FROM ubuntu:16.04
 
-MAINTAINER Simon Hofmann "simon.hofmann@consol.de"
-ENV REFRESHED_AT 2018-10-29
+MAINTAINER HardCoreForest "it@hardcoreforest.com"
+ENV REFRESHED_AT 2020
 
 LABEL io.k8s.description="Headless VNC Container with Xfce window manager, firefox and chromium" \
       io.k8s.display-name="Headless VNC Container based on Ubuntu" \
-      io.openshift.expose-services="6901:http,5901:xvnc" \
+      io.openshift.expose-services="6900:http,5900:xvnc" \
       io.openshift.tags="vnc, ubuntu, xfce" \
       io.openshift.non-scalable=true
 
 ## Connection ports for controlling the UI:
-# VNC port:5901
+# VNC port:5900
 # noVNC webport, connect via http://IP:6901/?password=vncpassword
 ENV DISPLAY=:1 \
-    VNC_PORT=5901 \
-    NO_VNC_PORT=6901
+    VNC_PORT=5900 \
+    NO_VNC_PORT=6900
 EXPOSE $VNC_PORT $NO_VNC_PORT
 
 ### Envrionment config
