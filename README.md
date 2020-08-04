@@ -5,8 +5,8 @@ This repository contains a collection of Docker images with headless VNC environ
 Each Docker image is installed with the following components:
 
 * Desktop environment [**Xfce4**](http://www.xfce.org) or [**IceWM**](http://www.icewm.org/)
-* VNC-Server (default VNC port `5901`)
-* [**noVNC**](https://github.com/novnc/noVNC) - HTML5 VNC client (default http port `6901`)
+* VNC-Server (default VNC port `5900`)
+* [**noVNC**](https://github.com/novnc/noVNC) - HTML5 VNC client (default http port `6900`)
 * Browsers:
   * Mozilla Firefox
   * Chromium
@@ -47,17 +47,17 @@ Usage is **similar** for all provided images, e.g. for `consol/centos-xfce-vnc`:
 
       docker run consol/centos-xfce-vnc --help
 
-- Run command with mapping to local port `5901` (vnc protocol) and `6901` (vnc web access):
+- Run command with mapping to local port `5900` (vnc protocol) and `6900` (vnc web access):
 
-      docker run -d -p 5901:5901 -p 6901:6901 consol/centos-xfce-vnc
+      docker run -d -p 5900:5900 -p 6900:6900 consol/centos-xfce-vnc
   
 - Change the default user and group within a container to your own with adding `--user $(id -u):$(id -g)`:
 
-      docker run -d -p 5901:5901 -p 6901:6901 --user $(id -u):$(id -g) consol/centos-xfce-vnc
+      docker run -d -p 5900:5900 -p 6900:6900 --user $(id -u):$(id -g) consol/centos-xfce-vnc
 
 - If you want to get into the container use interactive mode `-it` and `bash`
       
-      docker run -it -p 5901:5901 -p 6901:6901 consol/centos-xfce-vnc bash
+      docker run -it -p 5900:5900 -p 6900:6900 consol/centos-xfce-vnc bash
 
 - Build an image from scratch:
 
@@ -66,9 +66,9 @@ Usage is **similar** for all provided images, e.g. for `consol/centos-xfce-vnc`:
 # Connect & Control
 If the container is started like mentioned above, connect via one of these options:
 
-* connect via __VNC viewer `localhost:5901`__, default password: `vncpassword`
-* connect via __noVNC HTML5 full client__: [`http://localhost:6901/vnc.html`](http://localhost:6901/vnc.html), default password: `vncpassword` 
-* connect via __noVNC HTML5 lite client__: [`http://localhost:6901/?password=vncpassword`](http://localhost:6901/?password=vncpassword) 
+* connect via __VNC viewer `localhost:5900`__, default password: `vncpassword`
+* connect via __noVNC HTML5 full client__: [`http://localhost:6900/vnc.html`](http://localhost:6900/vnc.html), default password: `vncpassword` 
+* connect via __noVNC HTML5 lite client__: [`http://localhost:6900/?password=vncpassword`](http://localhost:6900/?password=vncpassword) 
 
 
 ## Hints
@@ -99,12 +99,12 @@ Per default, since version `1.3.0` all container processes will be executed with
 #### 2.1) Using root (user id `0`)
 Add the `--user` flag to your docker run command:
 
-    docker run -it --user 0 -p 6911:6901 consol/centos-xfce-vnc
+    docker run -it --user 0 -p 6911:6900 consol/centos-xfce-vnc
 
 #### 2.2) Using user and group id of host system
 Add the `--user` flag to your docker run command:
 
-    docker run -it -p 6911:6901 --user $(id -u):$(id -g) consol/centos-xfce-vnc
+    docker run -it -p 6911:6900 --user $(id -u):$(id -g) consol/centos-xfce-vnc
 
 ### 3) Override VNC environment variables
 The following VNC environment variables can be overwritten at the `docker run` phase to customize your desktop environment inside the container:
@@ -116,25 +116,25 @@ The following VNC environment variables can be overwritten at the `docker run` p
 Simply overwrite the value of the environment variable `VNC_PW`. For example in
 the docker run command:
 
-    docker run -it -p 5901:5901 -p 6901:6901 -e VNC_PW=my-pw consol/centos-xfce-vnc
+    docker run -it -p 5900:5900 -p 6900:6900 -e VNC_PW=my-pw consol/centos-xfce-vnc
 
 #### 3.2) Example: Override the VNC resolution
 Simply overwrite the value of the environment variable `VNC_RESOLUTION`. For example in
 the docker run command:
 
-    docker run -it -p 5901:5901 -p 6901:6901 -e VNC_RESOLUTION=800x600 consol/centos-xfce-vnc
+    docker run -it -p 5900:5900 -p 6900:6900 -e VNC_RESOLUTION=800x600 consol/centos-xfce-vnc
     
 ### 4) View only VNC
 Since version `1.2.0` it's possible to prevent unwanted control via VNC. Therefore you can set the environment variable `VNC_VIEW_ONLY=true`. If set, the startup script will create a random password for the control connection and use the value of `VNC_PW` for view only connection over the VNC connection.
 
-     docker run -it -p 5901:5901 -p 6901:6901 -e VNC_VIEW_ONLY=true consol/centos-xfce-vnc
+     docker run -it -p 5900:5900 -p 6900:6900 -e VNC_VIEW_ONLY=true consol/centos-xfce-vnc
 
 ### 5) Known Issues
 
 #### 5.1) Chromium crashes with high VNC_RESOLUTION ([#53](https://github.com/ConSol/docker-headless-vnc-container/issues/53))
 If you open some graphic/work intensive websites in the Docker container (especially with high resolutions e.g. `1920x1080`) it can happen that Chromium crashes without any specific reason. The problem there is the too small `/dev/shm` size in the container. Currently there is no other way, as define this size on startup via `--shm-size` option, see [#53 - Solution](https://github.com/ConSol/docker-headless-vnc-container/issues/53#issuecomment-347265977):
 
-    docker run --shm-size=256m -it -p 6901:6901 -e VNC_RESOLUTION=1920x1080 consol/centos-xfce-vnc chromium-browser http://map.norsecorp.com/
+    docker run --shm-size=256m -it -p 6900:6900 -e VNC_RESOLUTION=1920x1080 consol/centos-xfce-vnc chromium-browser http://map.norsecorp.com/
   
 Thx @raghavkarol for the hint! 
 
